@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 class TodosContainer extends Component {
   render () {
     return (
-      <h2>
-        I am at the ToDos Container Page
-      </h2>
+      <div className="todosContainer">
+        <h2>This is the Todos Container</h2>
+      </div>
     );
   };
 };
