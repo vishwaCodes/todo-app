@@ -1,6 +1,21 @@
 import React, { Component } from 'react';
 
 class Todo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      formStyle: {
+        display: 'none',
+      },
+    };
+  };
+
+  toggleBodyForm = () => {
+    this.state.formStyle.display === 'block'
+    ? this.setState({ formStyle: { display: 'none' } })
+    : this.setState({ formStyle: { display: 'block' } });
+  };
+
   deleteClickedTodo = () => {
     this.props.deleteTodo(this.props.todo);
   };
