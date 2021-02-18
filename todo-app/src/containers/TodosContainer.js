@@ -1,7 +1,8 @@
-import CreateTodoForm from '../components/CreateTodoForm';
 import React, { Component } from 'react';
+import CreateTodoForm from '../components/CreateTodoForm';
 import TodoModel from '../models/Todo';
 import Todos from '../components/Todos';
+
 
 class TodosContainer extends Component {
   constructor() {
@@ -39,6 +40,10 @@ class TodosContainer extends Component {
   render () {
     return (
       <div className="todosComponent">
+        <CreateTodoForm 
+          createTodo={this.createTodo}
+        />
+
         <Todos 
           todos={this.state.todos}
         />
