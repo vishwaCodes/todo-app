@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import CreateTodoForm from '../components/CreateTodoForm';
 import TodoModel from '../models/Todo';
 import Todos from '../components/Todos';
-import TodoDashboard from '../components/TodoDashboard'
 
 class TodosContainer extends Component {
   constructor(){
@@ -27,7 +26,17 @@ class TodosContainer extends Component {
         todoCount:res.data.todos.filter(todo => todo.completed === false).length
       })
     })
-  }
+  } 
+
+  // After the todo delete response is sent back from the server, we find the corresponding entry for the todo in our todos state array and remove it.
+  deleteTodo = (todo) => {
+    TodoModel.delete(todo).then((res) => {
+      let todos = this.state.todos.filter((todo) => {
+        return todo._id !== res.data._id;
+      });
+      this.setState({todos});
+    });
+  };
 
   createTodo = (todo) => {
     let newTodo = {
@@ -42,88 +51,34 @@ class TodosContainer extends Component {
     })
   }
 
-  updateTodo = (todoBody, todoId) => {
-    function isUpdatedTodo(todo) {
-        return todo._id === todoId;
-    }
-    TodoModel.update(todoId, todoBody).then((res) => {
-        let todos = this.state.todos
-        todos.find(isUpdatedTodo).body = todoBody.body
-        this.setState({todos: todos})
-    })
-  }
+  updateTodo = todo => {
+    const isUpdatedTodo = t => {
+        return t._id === todo._id;
+    };
 
-
-  deleteTodo = (todo) => {
-    TodoModel.delete(todo).then((res) => {
-        let todos = this.state.todos.filter(function(todo) {
-          return todo._id !== res.data._id
+    TodoModel.update(todo)
+        .then((res) => {
+          let todos = this.state.todos;
+          todos.find(isUpdatedTodo).body = todo.body;
+          this.setState({ todos: todos });
         });
-        this.setState({todos})
-    })
-  }
+  };
 
-  markComplete = (todoId, complete) => {
-    console.log(complete)
-    function isUpdatedTodo(todo) {
-      return todo._id === todoId;
-    } 
-    let todos = this.state.todos;
-    todos.find(isUpdatedTodo).complete = complete
-    this.setState({
-      todos: todos
-    })
-    TodoModel.update( todoId, complete ).then((res) => {
-      if(complete.completed){
-        this.setState({
-          todoCount: this.state.todoCount - 1
-        })
-      } else {
-        this.setState({
-          todoCount: this.state.todoCount + 1
-        })
-      }
-      return res.data.completed
-    })
-  }
-
-  clearCompleted = () => {
-    console.log("CLEAR!")
-    
-    let filteredTodos = this.state.todos
-      .filter( todo => {
-        console.log("in filter")
-        if(todo.completed === true ){
-          console.log("bye!")
-          TodoModel.delete(todo)
-        }
-          return true
-        
-      })
-      this.setState({
-        todos: filteredTodos
-      })
-
-  }
-  
-  render(){
+  render() {
     return (
-      <div className='todosComponent'>
+      <div className="todosComponent">
         <CreateTodoForm
           createTodo={ this.createTodo }
-          />
+        />
         <Todos
-          todos={this.state.todos}
-          onDeleteTodo={this.deleteTodo} 
-          onUpdateTodo={this.updateTodo} 
-          markComplete={this.markComplete}
+          todos={ this.state.todos }
+          updateTodo={ this.updateTodo } 
+          deleteTodo={ this.deleteTodo }
           />
-        <TodoDashboard 
-          todoCount={this.state.todoCount} />
-
       </div>
-    )
-  }
-}
+    );
+  };
+
+};
 
 export default TodosContainer;

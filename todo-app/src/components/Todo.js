@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import TodoForm from './CreateTodoForm';
+import CreateTodoForm from './CreateTodoForm'; 
+import TodoForm from './TodoForm';
 
 class Todo extends Component {
   constructor(props) {
@@ -21,23 +22,22 @@ class Todo extends Component {
     this.props.deleteTodo(this.props.todo);
   };
 
-  render () {
+  render() {
     return (
       <li data-todos-index={this.props.todo._id}>
         <div>
-          <span className="todo-item">
-            {this.props.todo.body}
+          
+          <span
+            className='edit' 
+            onClick={this.toggleBodyForm}>
+            Edit
           </span>
-          <span 
-          className="edit"
-          onClick={this.toggleBodyForm}>
-          Edit
-          </span>
-          <span 
-          className="remove"
-          onClick={this.deleteClickedTodo}>
-          Remove
-          </span>
+          <span className="todo-item">{this.props.todo.body}</span>
+        <span 
+        className="remove"
+        onClick={this.deleteClickedTodo}>
+        Remove
+        </span>
         </div>
         <TodoForm 
           todo={this.props.todo}
@@ -45,11 +45,11 @@ class Todo extends Component {
           autoFocus={true}
           buttonName="Update Todo!"
           updateTodo={this.props.updateTodo}
-          toggleBodyForm={this.toggleBodyForm}
-        />
-      </li>
+          toggleBodyForm={this.toggleBodyForm} />
+      </li> 
     );
   };
+  
 };
 
 export default Todo;

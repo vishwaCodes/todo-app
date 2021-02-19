@@ -19,7 +19,6 @@ class CreateTodoForm extends Component {
       todo: event.target.value,
     });
   };
-
   onFormSubmit = (event) => {
     event.preventDefault();
     let todo = this.state.todo;
@@ -28,7 +27,6 @@ class CreateTodoForm extends Component {
       todo: '',
     });
   };
-
   render() {
     return (
       <div>
@@ -61,5 +59,6 @@ class CreateTodoForm extends Component {
     );
   };
 };
+
 
 export default CreateTodoForm;
